@@ -25,7 +25,7 @@
 #include "plpy_plpymodule.h"
 #include "plpy_procedure.h"
 #include "plpy_resultobject.h"
-
+#include "plpy_numpy.h"
 
 static PyObject *PLy_spi_execute_query(char *query, long limit);
 static PyObject *PLy_spi_execute_plan(PyObject *ob, PyObject *list, long limit);
@@ -165,7 +165,7 @@ PLy_spi_prepare(PyObject *self, PyObject *args)
 	return (PyObject *) plan;
 }
 
-/* execute(query="select * from foo", limit=5)
+/* execute(query="select * from foo", limit=5, ismatrix=False)
  * execute(plan=plan, values=(foo, bar), limit=5)
  */
 PyObject *
@@ -177,7 +177,9 @@ PLy_spi_execute(PyObject *self, PyObject *args)
 	long		limit = 0;
 
 	if (PyArg_ParseTuple(args, "s|l", &query, &limit))
+	{
 		return PLy_spi_execute_query(query, limit);
+	}
 
 	PyErr_Clear();
 

@@ -3,6 +3,9 @@
  *
  * src/pl/plpython/plpy_plpymodule.c
  */
+#include "Python.h"
+#include "numpy/npy_math.h"
+#include "numpy/arrayobject.h"
 
 #include "postgres.h"
 
@@ -19,6 +22,7 @@
 #include "plpy_resultobject.h"
 #include "plpy_spi.h"
 #include "plpy_subxactobject.h"
+#include "plpy_numpy.h"
 
 
 HTAB	   *PLy_spi_exceptions = NULL;
@@ -74,6 +78,7 @@ static PyMethodDef PLy_methods[] = {
 	 * execute a plan or query
 	 */
 	{"execute", PLy_spi_execute, METH_VARARGS, NULL},
+	{"execute_toarray", PLy_spi_execute_toarray, METH_VARARGS, NULL},
 
 	/*
 	 * escaping strings
@@ -165,7 +170,7 @@ PLy_init_plpy(void)
 	plpy = Py_InitModule("plpy", PLy_methods);
 	PLy_add_exceptions(plpy);
 #endif
-
+    import_array();
 	/* PyDict_SetItemString(plpy, "PlanType", (PyObject *) &PLy_PlanType); */
 
 	/*

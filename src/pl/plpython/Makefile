@@ -49,7 +49,8 @@ OBJS = \
 	plpy_spi.o \
 	plpy_subxactobject.o \
 	plpy_typeio.o \
-	plpy_util.o
+	plpy_util.o \
+	plpy_numpy.o
 
 DATA = $(NAME)u.control $(NAME)u--1.0.sql $(NAME)u--unpackaged--1.0.sql
 ifeq ($(python_majorversion),2)
